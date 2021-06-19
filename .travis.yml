@@ -3,9 +3,9 @@ language: bash
 services:
   - docker
 
-before_install:
-  - sudo apt-get update
-  - sudo apt-get -y install qemu-static binfmt
+#before_install:
+#  - sudo apt-get update
+#  - sudo apt-get -y install qemu-static binfmt
 
 deploy:
   provider: script
