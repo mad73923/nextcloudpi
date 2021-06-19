@@ -10,7 +10,7 @@ version=$(git describe --tags --always)
 version=${version%-*-*}
 release=$(jq -r .release < etc/ncp.cfg)
 
-function docker_build() { DOCKER_BUILDKIT=1 docker build . "$@"; }
+function docker_build() { docker buildx build . "$@"; }
 
 function build_arch()
 {
