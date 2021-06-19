@@ -5,6 +5,9 @@ services:
 
 deploy:
   provider: script
-  script: bash batch.sh
+  script: 
+    bash ./build-docker.sh x86
+    bash ./build-docker.sh armhf
+    bash ./build-docker.sh arm64
   on:
     branch: master
