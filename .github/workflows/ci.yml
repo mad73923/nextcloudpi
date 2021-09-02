@@ -44,11 +44,24 @@ jobs:
           images: |
             ghcr.io/${{ github.repository }}
 
-      - name: Build and push containers to github container registry
+      - name: Build containers
         run: |
-             for arch in armhf x86 arm64
+             platforms="armhf x86 arm64"
+             for arch in ${platforms}
              do
               ./build-docker.sh $arch
+             done
+
+      - name: Push containers to github container registry
+        run: |
+             version=$(git describe --tags --always)
+             version=${version%-*-*}
+             for arch in ${platforms}
+             do
               docker tag ownyourbits/nextcloudpi-$arch:latest ghcr.io/${{ github.repository_owner }}/nextcloudpi-$arch:latest
               docker push ghcr.io/${{ github.repository_owner }}/nextcloudpi-$arch:latest
+              if [[ "{{ github.ref }}" == "ref/tags/"* ]]; then
+                docker tag ownyourbits/nextcloudpi-$arch:latest ghcr.io/${{ github.repository_owner }}/nextcloudpi-$arch:"${version}"
+                docker push ghcr.io/${{ github.repository_owner }}/nextcloudpi-$arch:"${version}"
+              fi
              done
