@@ -46,28 +46,10 @@ jobs:
 
       - name: Build containers
         run: |
-             ./build-docker.sh x86
              ./build-docker.sh armhf
-             ./build-docker.sh arm64
+#             ./build-docker.sh x86
+#             ./build-docker.sh arm64
 
-#       - name: set variables
-#         run: |
-#              release=$(jq -r .release < etc/ncp.cfg)
-#              version=$(git describe --tags --always)
-#              version=${version%-*-*}
-
-# docker_build -f docker/debian-ncp/Dockerfile  -t ownyourbits/debian-ncp-${ncp_tag}:latest --pull --build-arg release=${release} --build-arg arch=${arch} --build-arg arch_qemu=${arch_qemu}
-#   docker_build -f docker/lamp/Dockerfile        -t ownyourbits/lamp-${ncp_tag}:latest              --build-arg release=${release} --build-arg arch=${ncp_tag}
-#   docker_build -f docker/nextcloud/Dockerfile   -t ownyourbits/nextcloud-${ncp_tag}:latest         --build-arg release=${release} --build-arg arch=${ncp_tag}
-#   docker_build -f docker/nextcloudpi/Dockerfile -t ownyourbits/nextcloudpi-${ncp_tag}:latest       --build-arg release=${release} --build-arg arch=${ncp_tag} --build-arg ncp_ver=${version}
-
-#       - name: Build Debian ncp
-#         uses: docker/build-push-action@v2
-#         with:
-#           context: .
-#           file: ./Dockerfile
-#           platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
-#           push: false
-#           build-args: VERSION=master
-#           tags: ${{ steps.meta.outputs.tags }}
-#           labels: ${{ steps.meta.outputs.labels }}
+      - name: Push containers
+        run: |
+             docker push ghcr.io/${{ github.repository_owner }}/ownyourbits/nextcloudpi-armhf:latest
