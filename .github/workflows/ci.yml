@@ -58,10 +58,13 @@ jobs:
              version=${version%-*-*}
              for arch in ${platforms}
              do
-              docker tag ownyourbits/nextcloudpi-$arch:latest ghcr.io/${{ github.repository_owner }}/nextcloudpi-$arch:latest
-              docker push ghcr.io/${{ github.repository_owner }}/nextcloudpi-$arch:latest
               if [[ "{{ github.ref }}" == "ref/tags/"* ]]; then
+                # build from tag
                 docker tag ownyourbits/nextcloudpi-$arch:latest ghcr.io/${{ github.repository_owner }}/nextcloudpi-$arch:"${version}"
                 docker push ghcr.io/${{ github.repository_owner }}/nextcloudpi-$arch:"${version}"
+              else
+                # build from master
+                docker tag ownyourbits/nextcloudpi-$arch:latest ghcr.io/${{ github.repository_owner }}/nextcloudpi-$arch:latest
+                docker push ghcr.io/${{ github.repository_owner }}/nextcloudpi-$arch:latest
               fi
              done
