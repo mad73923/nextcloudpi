@@ -47,6 +47,8 @@ jobs:
       - name: Build containers
         run: |
              ./build-docker.sh x86
+             ./build-docker.sh armhf
+             ./build-docker.sh arm64
 
 #       - name: set variables
 #         run: |
