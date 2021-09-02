@@ -44,12 +44,11 @@ jobs:
           images: |
             ghcr.io/${{ github.repository }}
 
-      - name: Build containers
+      - name: Build and push containers to github container registry
         run: |
-             ./build-docker.sh armhf
-#             ./build-docker.sh x86
-#             ./build-docker.sh arm64
-
-      - name: Push containers
-        run: |
-             docker push ghcr.io/${{ github.repository_owner }}/ownyourbits/nextcloudpi-armhf:latest
+             for arch in armhf x86 arm64
+             do
+              ./build-docker.sh $arch
+              docker tag ownyourbits/nextcloudpi-$arch:latest ghcr.io/${{ github.repository_owner }}/nextcloudpi-$arch:latest
+              docker push ghcr.io/${{ github.repository_owner }}/nextcloudpi-$arch:latest
+             done
