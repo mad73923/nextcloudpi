@@ -48,14 +48,16 @@ jobs:
         run: |
              docker pull hello-world
 
-      - name: Push containers to github container registry
+      - name: Push containers to github container registry as tag
+        if: contains(github.ref, "ref/tags/")
         run: |
-             if [[ ${{ github.ref }} == 'ref/tags/'* ]]; then
-               # build from tag
-               docker tag hello-world ghcr.io/${{ github.repository_owner }}/hello-world:v1.1
-               docker push ghcr.io/${{ github.repository_owner }}/hello-world:v1.1
-             else
-               # build from branch
-               docker tag hello-world ghcr.io/${{ github.repository_owner }}/hello-world:latest
-               docker push ghcr.io/${{ github.repository_owner }}/hello-world:latest
-             fi
+             # build from tag
+             docker tag hello-world ghcr.io/${{ github.repository_owner }}/hello-world:v1.1
+             docker push ghcr.io/${{ github.repository_owner }}/hello-world:v1.1
+
+      - name: Push containers to github container registry as latest
+        if: contains(github.ref, "refs/heads/")
+        run: |
+             # build from branch
+             docker tag hello-world ghcr.io/${{ github.repository_owner }}/hello-world:latest
+             docker push ghcr.io/${{ github.repository_owner }}/hello-world:latest
